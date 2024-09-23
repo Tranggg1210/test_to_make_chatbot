@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Format and lint code
+echo "🪄 In the process of formatting and linting code."
+npx lint-staged
+
+echo "All code are beautiful"
+
+# Get the current branch name
+branch_name=$(git rev-parse --abbrev-ref HEAD)
+
+# Define your branch naming convention regex
+branch_regex="^(feature|bugfix|hotfix|release|docs)\/[a-z0-9._-]+$"
+
+
+# Check if the branch name is master
+if [ "$branch_name" = "develop" ] || [ "$branch_name" = "uat" ] || [ "$branch_name" = "prod" ]; then
+  email=$(git config user.email)
+  
+  # List of allowed usernames
+  allowed_email="nguyenthitrang.ttd@gmail.com"
+
+  # Flag to indicate if the email is allowed
+  is_allowed=false
+
+  # Check if the email is in the allowed list
+  for allowed in $allowed_email; do
+    if [ "$email" = "$allowed" ]; then
+      is_allowed=true
+      break
+    fi
+  done
+
+  if [ "$is_allowed" = false ]; then
+    echo "Error: User '$email' is not allowed to push to the '$branch_name' branch."
+    exit 1
+  fi
+  echo "Skipping branch name check for '$branch_name' with user has email '$email'"
+
+else
+  # Check if the branch name matches the convention
+  if ! echo "$branch_name" | grep -Eq "$branch_regex"; then
+    echo "Error: Branch name '$branch_name' does not follow the naming convention."
+    echo "Allowed patterns: feature/*, bugfix/*, hotfix/*, release/*, docs/*"
+    exit 1
+  fi
+fi
+
+# If the branch name is valid, allow the commit
+exit 0
