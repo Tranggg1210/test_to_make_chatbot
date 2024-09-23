@@ -15,7 +15,7 @@ branch_regex="^(feature|bugfix|hotfix|release|docs)\/[a-z0-9._-]+$"
 
 
 # Check if the branch name is master
-if [ "$branch_name" = "dev" ] || [ "$branch_name" = "uat" ] || [ "$branch_name" = "prod" ]; then
+if [ "$branch_name" = "develop" ] || [ "$branch_name" = "uat" ] || [ "$branch_name" = "prod" ]; then
   email=$(git config user.email)
   
   # List of allowed usernames
