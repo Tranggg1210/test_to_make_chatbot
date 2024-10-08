@@ -1,0 +1,9 @@
+.main-layout{
+    @apply w-pageSize mx-auto min-h-screen overflow-x-hidden;
+}
+
+@media (max-width: 1440px){
+    .main-layout{
+        @apply w-full;
+    }
+}
