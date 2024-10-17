@@ -18,6 +18,8 @@ public interface UserService {
 
   UserDto getUserById(String userId);
 
+  UserDto getUserByUsername(String username);
+
   PaginationResponseDto<UserDto> getUsers(PaginationFullRequestDto request);
 
   UserDto getCurrentUser(UserPrincipal principal);
