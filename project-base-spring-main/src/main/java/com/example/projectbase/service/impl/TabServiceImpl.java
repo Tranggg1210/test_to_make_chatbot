@@ -33,7 +33,7 @@ public class TabServiceImpl implements TabService {
         Tab tab = tabMapper.toEntity(tabCreateDto);
         tab.setNumberOfQuestions(0);
         tab.setUser(user);
-        if (user.getNumberOfTabs() >=2) {
+        if (user.getNumberOfTabs() >=15) {
             throw new MaxTabsCreatedException(ValidationErrorMessages.MAX_TABS_CREATED);
         }
         user.setNumberOfTabs(user.getNumberOfTabs() + 1);

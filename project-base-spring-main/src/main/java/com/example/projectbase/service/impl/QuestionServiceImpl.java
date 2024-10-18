@@ -32,7 +32,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Tab.ERR_NOT_FOUND_ID));
         Question question = questionMapper.toEntity(questionCreateDto);
         question.setTab(tab);
-        if(tab.getNumberOfQuestions() >= 2) throw new MaxQuestionsSentException(ValidationErrorMessages.MAX_QUESTIONS_SENT);
+        if(tab.getNumberOfQuestions() >= 500) throw new MaxQuestionsSentException(ValidationErrorMessages.MAX_QUESTIONS_SENT);
         tab.setNumberOfQuestions(tab.getNumberOfQuestions() + 1);
         tabRepository.save(tab);
         return questionRepository.save(question);
