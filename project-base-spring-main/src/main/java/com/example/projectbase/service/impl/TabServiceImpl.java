@@ -5,7 +5,9 @@ import com.example.projectbase.constant.ResponeConstant;
 import com.example.projectbase.constant.ValidationErrorMessages;
 import com.example.projectbase.domain.dto.request.TabCreateDto;
 import com.example.projectbase.domain.dto.request.TabRenameDto;
+import com.example.projectbase.domain.dto.response.ChatResponseDto;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
+import com.example.projectbase.domain.dto.response.QuestionResponseDto;
 import com.example.projectbase.domain.dto.response.TabResponseDto;
 import com.example.projectbase.domain.entity.Tab;
 import com.example.projectbase.domain.entity.User;
@@ -14,16 +16,21 @@ import com.example.projectbase.exception.MaxTabsCreatedException;
 import com.example.projectbase.exception.NotFoundException;
 import com.example.projectbase.repository.TabRepository;
 import com.example.projectbase.repository.UserRepository;
+import com.example.projectbase.service.AnswerService;
+import com.example.projectbase.service.QuestionService;
 import com.example.projectbase.service.TabService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class TabServiceImpl implements TabService {
     private final TabRepository tabRepository;
     private final UserRepository userRepository;
+    private final QuestionService questionService;
+    private final AnswerService answerService;
     private final TabMapper tabMapper;
 
     @Override
@@ -45,6 +52,20 @@ public class TabServiceImpl implements TabService {
     public List<TabResponseDto> getTabsByUserId(String userId) {
         List<Tab> tabs= tabRepository.findAllByUserId(userId);
         return tabs.stream().map(tabMapper::toTabResponseDto).toList();
+    }
+
+    @Override
+    public List<ChatResponseDto> getChatsByTabId(String tabId) {
+        List<QuestionResponseDto> questions= questionService.getQuestionByTabId(tabId);
+        List<ChatResponseDto> chatResponses = new ArrayList<>();
+        questions.forEach(question -> {
+                ChatResponseDto chatResponseDto = new ChatResponseDto();
+                chatResponseDto.setQuestion(question);
+                chatResponseDto.setAnswer(answerService.getAnswerByQuestionId(question.getId()));
+                chatResponses.add(chatResponseDto);
+                }
+        );
+        return chatResponses;
     }
 
     @Override

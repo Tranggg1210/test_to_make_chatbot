@@ -4,6 +4,7 @@ import com.example.projectbase.constant.ErrorMessage;
 import com.example.projectbase.constant.ResponeConstant;
 import com.example.projectbase.domain.dto.request.AnswerCreateDto;
 import com.example.projectbase.domain.dto.request.AnswerUpdateDto;
+import com.example.projectbase.domain.dto.response.AnswerResponseDto;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
 import com.example.projectbase.domain.entity.Answer;
 import com.example.projectbase.domain.entity.Question;
@@ -23,25 +24,25 @@ public class AnswerServiceImpl implements AnswerService {
     private final AnswerMapper answerMapper;
 
     @Override
-    public Answer createAnswer(AnswerCreateDto answerCreateDto) {
+    public AnswerResponseDto createAnswer(AnswerCreateDto answerCreateDto) {
         Question question = questionRepository.findById(answerCreateDto.getQuestionId())
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Answer.ERR_NOT_FOUND_ID));
         Answer answer = answerMapper.toEntity(answerCreateDto);
         answer.setQuestion(question);
-        return answerRepository.save(answer);
+        return answerMapper.toAnswerResponseDto(answerRepository.save(answer));
     }
 
     @Override
-    public Answer getAnswerByQuestionId(String questionId) {
-        return answerRepository.findAnswersByQuestionId(questionId);
+    public AnswerResponseDto getAnswerByQuestionId(String questionId) {
+        return answerMapper.toAnswerResponseDto(answerRepository.findAnswersByQuestionId(questionId));
     }
 
     @Override
-    public Answer updateAnswer(AnswerUpdateDto answerUpdateDto) {
+    public AnswerResponseDto updateAnswer(AnswerUpdateDto answerUpdateDto) {
         Answer answer = answerRepository.findById(answerUpdateDto.getId())
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Answer.ERR_NOT_FOUND_ID));
         answer.setContent(answerUpdateDto.getContent());
-        return answerRepository.save(answer);
+        return answerMapper.toAnswerResponseDto(answerRepository.save(answer));
     }
 
     @Override

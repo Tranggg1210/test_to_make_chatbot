@@ -49,4 +49,11 @@ public class UrlConstant {
     public static final String DELETE_TAB = PRE_FIX;
     private Tab() {}
   }
+
+  public static class Chat {
+    private static final String PRE_FIX = "/chat";
+    public static final String CREATE_CHAT = PRE_FIX;
+    public static final String GET_CHATS = PRE_FIX;
+    private Chat() {}
+  }
 }

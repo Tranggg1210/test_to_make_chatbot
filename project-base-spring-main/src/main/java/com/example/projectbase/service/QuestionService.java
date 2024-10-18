@@ -1,14 +1,16 @@
 package com.example.projectbase.service;
 
+import com.example.projectbase.domain.dto.request.ChatCreateDto;
 import com.example.projectbase.domain.dto.request.QuestionCreateDto;
+import com.example.projectbase.domain.dto.response.ChatResponseDto;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
-import com.example.projectbase.domain.entity.Question;
+import com.example.projectbase.domain.dto.response.QuestionResponseDto;
 
-import javax.xml.bind.ValidationException;
 import java.util.List;
 
 public interface QuestionService {
-    Question createQuestion(QuestionCreateDto questionCreateDto) throws ValidationException;
-    List<Question> getQuestionByTabId(String tabId);
+    QuestionResponseDto createQuestion(QuestionCreateDto questionCreateDto);
+    ChatResponseDto createChat(ChatCreateDto chatCreateDto);
+    List<QuestionResponseDto> getQuestionByTabId(String tabId);
     CommonResponseDto deleteQuestion(String questionId);
 }

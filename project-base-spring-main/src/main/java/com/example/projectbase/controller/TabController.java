@@ -15,8 +15,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.bind.ValidationException;
-
 @RequiredArgsConstructor
 @RestApiV1
 @Validated
@@ -27,7 +25,7 @@ public class TabController {
     @Operation(summary = "API create tab")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping(UrlConstant.Tab.CREATE_TAB)
-    public ResponseEntity<?> createTab(@RequestBody TabCreateDto tabCreateDto) throws ValidationException {
+    public ResponseEntity<?> createTab(@RequestBody TabCreateDto tabCreateDto) {
         return VsResponseUtil.success(tabService.createTab(tabCreateDto));
     }
 
