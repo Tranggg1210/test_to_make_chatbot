@@ -29,9 +29,9 @@ public class UserController {
 
   private final UserService userService;
 
-  @Tag(name = "user-controller-admin")
+  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
   @Operation(summary = "API create user")
-  @PreAuthorize("hasRole('ADMIN')")
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
   @PostMapping(UrlConstant.User.CREATE_USER)
   public ResponseEntity<?> createUser(@RequestBody UserCreateDto userCreateDto) {
     return VsResponseUtil.success(userService.createUser(userCreateDto));

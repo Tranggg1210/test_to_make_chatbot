@@ -28,14 +28,10 @@ public class Question {
     @Column(nullable = false)
     private String content;
 
-    @Nationalized
-    @Column(nullable = false)
-    private LocalDateTime createdTime;
-
-    //Link to table User
+    //Link to table Tab
     @ManyToOne
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_QUESTION_USER"))
-    private User user;
+    @JoinColumn(name = "tab_id", foreignKey = @ForeignKey(name = "FK_QUESTION_TAB"))
+    private Tab tab;
 
     //Link to table Answer
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")

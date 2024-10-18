@@ -39,4 +39,7 @@ public class ErrorMessage {
     public static final String ERR_NOT_FOUND_ID = "exception.answer.not.found.id";
   }
 
+  public static class Tab {
+    public static final String ERR_NOT_FOUND_ID = "exception.tab.not.found.id";
+  }
 }

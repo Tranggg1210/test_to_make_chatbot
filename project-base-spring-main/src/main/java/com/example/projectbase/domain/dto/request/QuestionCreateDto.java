@@ -18,5 +18,5 @@ public class QuestionCreateDto {
     private String content;
 
     @NotNull(message = ErrorMessage.INVALID_SOME_THING_FIELD_IS_REQUIRED)
-    private String userId;
+    private String tab_id;
 }

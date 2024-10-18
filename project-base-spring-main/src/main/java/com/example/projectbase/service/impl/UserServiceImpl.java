@@ -13,6 +13,7 @@ import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.User;
 import com.example.projectbase.domain.mapper.UserMapper;
 import com.example.projectbase.exception.NotFoundException;
+import com.example.projectbase.exception.UsernameAlreadyExistsException;
 import com.example.projectbase.repository.RoleRepository;
 import com.example.projectbase.repository.UserRepository;
 import com.example.projectbase.security.UserPrincipal;
@@ -39,11 +40,16 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto createUser(UserCreateDto userCreateDto) {
-     User user = userMapper.toUser(userCreateDto);
-     user.setPassword(passwordEncoder.encode(user.getPassword()));
-     user.setRole(roleRepository.findByRoleName(RoleConstant.USER));
-     userRepository.save(user);
-     return userMapper.toUserDto(user);
+    boolean userExists = userRepository.findByUsername(userCreateDto.getUsername()).isPresent();
+    if (userExists) {
+      throw new UsernameAlreadyExistsException("Username '" + userCreateDto.getUsername() + "' already exists.");
+    }
+    User user = userMapper.toUser(userCreateDto);
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setNumberOfTabs(0);
+    user.setRole(roleRepository.findByRoleName(RoleConstant.USER));
+    userRepository.save(user);
+    return userMapper.toUserDto(user);
   }
 
   @Override
@@ -97,9 +103,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public CommonResponseDto deleteUser(String userId) {
-    Optional<User> user= Optional.ofNullable(userRepository.findById(userId).orElseThrow(() ->
-            new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId})));
-    userRepository.deleteById(userId);
+    User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID));
+    userRepository.delete(user);
     return  new CommonResponseDto(true, ResponeConstant.SUCCESS);
   }
 }

@@ -3,7 +3,6 @@ package com.example.projectbase.controller;
 import com.example.projectbase.base.RestApiV1;
 import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.constant.UrlConstant;
-import com.example.projectbase.domain.dto.pagination.PaginationFullRequestDto;
 import com.example.projectbase.domain.dto.request.AnswerCreateDto;
 import com.example.projectbase.domain.dto.request.AnswerUpdateDto;
 import com.example.projectbase.service.AnswerService;
@@ -11,13 +10,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestApiV1
@@ -37,8 +34,8 @@ public class AnswerController {
     @Operation(summary = "API get answer by questions")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping(UrlConstant.Answer.GET_ANSWERS)
-    public ResponseEntity<?> getAnswerByQuestionId(@RequestParam String questionId, @Valid @ParameterObject PaginationFullRequestDto requestDTO) {
-        return VsResponseUtil.success(answerService.getAnswerByQuestionId(questionId, requestDTO));
+    public ResponseEntity<?> getAnswerByQuestionId(@RequestParam String questionId) {
+        return VsResponseUtil.success(answerService.getAnswerByQuestionId(questionId));
     }
 
     @Tags({@Tag(name = "answer-controller-admin"), @Tag(name = "answer-controller")})

@@ -1,13 +1,16 @@
 package com.example.projectbase.service;
 
-import com.example.projectbase.domain.dto.pagination.PaginationFullRequestDto;
-import com.example.projectbase.domain.dto.pagination.PaginationResponseDto;
+import com.example.projectbase.domain.dto.request.ChatCreateDto;
 import com.example.projectbase.domain.dto.request.QuestionCreateDto;
+import com.example.projectbase.domain.dto.response.ChatResponseDto;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
-import com.example.projectbase.domain.entity.Question;
+import com.example.projectbase.domain.dto.response.QuestionResponseDto;
+
+import java.util.List;
 
 public interface QuestionService {
-    Question createQuestion(QuestionCreateDto questionCreateDto);
-    PaginationResponseDto<Question> getQuestionByUserId(String userId, PaginationFullRequestDto request);
+    QuestionResponseDto createQuestion(QuestionCreateDto questionCreateDto);
+    ChatResponseDto createChat(ChatCreateDto chatCreateDto);
+    List<QuestionResponseDto> getQuestionByTabId(String tabId);
     CommonResponseDto deleteQuestion(String questionId);
 }
