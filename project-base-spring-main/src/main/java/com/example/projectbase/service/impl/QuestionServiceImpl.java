@@ -2,11 +2,13 @@ package com.example.projectbase.service.impl;
 
 import com.example.projectbase.constant.ErrorMessage;
 import com.example.projectbase.constant.ResponeConstant;
+import com.example.projectbase.constant.ValidationErrorMessages;
 import com.example.projectbase.domain.dto.request.QuestionCreateDto;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
 import com.example.projectbase.domain.entity.Question;
 import com.example.projectbase.domain.entity.Tab;
 import com.example.projectbase.domain.mapper.QuestionMapper;
+import com.example.projectbase.exception.MaxQuestionsSentException;
 import com.example.projectbase.exception.NotFoundException;
 import com.example.projectbase.repository.QuestionRepository;
 import com.example.projectbase.repository.TabRepository;
@@ -15,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -31,6 +32,9 @@ public class QuestionServiceImpl implements QuestionService {
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Tab.ERR_NOT_FOUND_ID));
         Question question = questionMapper.toEntity(questionCreateDto);
         question.setTab(tab);
+        if(tab.getNumberOfQuestions() >= 2) throw new MaxQuestionsSentException(ValidationErrorMessages.MAX_QUESTIONS_SENT);
+        tab.setNumberOfQuestions(tab.getNumberOfQuestions() + 1);
+        tabRepository.save(tab);
         return questionRepository.save(question);
     }
 
@@ -42,9 +46,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public CommonResponseDto deleteQuestion(String questionId) {
-        Optional<Question> question= Optional.ofNullable(questionRepository.findById(questionId).orElseThrow(() ->
-                new NotFoundException(ErrorMessage.Question.ERR_NOT_FOUND_ID, new String[]{questionId})));
-        questionRepository.deleteById(questionId);
+        Question question = questionRepository.findById(questionId).orElseThrow(() -> new NotFoundException(ErrorMessage.Question.ERR_NOT_FOUND_ID));
+        questionRepository.delete(question);
         return  new CommonResponseDto(true, ResponeConstant.SUCCESS);
     }
 }

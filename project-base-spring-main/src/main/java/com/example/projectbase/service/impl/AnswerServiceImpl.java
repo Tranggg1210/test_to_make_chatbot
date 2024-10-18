@@ -2,9 +2,6 @@ package com.example.projectbase.service.impl;
 
 import com.example.projectbase.constant.ErrorMessage;
 import com.example.projectbase.constant.ResponeConstant;
-import com.example.projectbase.domain.dto.pagination.PaginationFullRequestDto;
-import com.example.projectbase.domain.dto.pagination.PaginationResponseDto;
-import com.example.projectbase.domain.dto.pagination.PagingMeta;
 import com.example.projectbase.domain.dto.request.AnswerCreateDto;
 import com.example.projectbase.domain.dto.request.AnswerUpdateDto;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
@@ -15,13 +12,8 @@ import com.example.projectbase.exception.NotFoundException;
 import com.example.projectbase.repository.AnswerRepository;
 import com.example.projectbase.repository.QuestionRepository;
 import com.example.projectbase.service.AnswerService;
-import com.example.projectbase.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -41,8 +33,7 @@ public class AnswerServiceImpl implements AnswerService {
 
     @Override
     public Answer getAnswerByQuestionId(String questionId) {
-        Answer answer = answerRepository.findAnswersByQuestionId(questionId);
-        return answer;
+        return answerRepository.findAnswersByQuestionId(questionId);
     }
 
     @Override

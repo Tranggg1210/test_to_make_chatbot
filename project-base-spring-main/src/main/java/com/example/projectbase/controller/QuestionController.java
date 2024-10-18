@@ -14,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.bind.ValidationException;
+
 @RequiredArgsConstructor
 @RestApiV1
 @Validated
@@ -24,7 +26,7 @@ public class QuestionController {
     @Operation(summary = "API create question")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping(UrlConstant.Question.CREATE_QUESTION)
-    public ResponseEntity<?> createQuestion(@RequestBody QuestionCreateDto questionCreateDto) {
+    public ResponseEntity<?> createQuestion(@RequestBody QuestionCreateDto questionCreateDto) throws ValidationException {
         return VsResponseUtil.success(questionService.createQuestion(questionCreateDto));
     }
 

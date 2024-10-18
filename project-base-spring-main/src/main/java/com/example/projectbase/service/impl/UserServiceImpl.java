@@ -73,25 +73,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto addTabToUser(String userId) {
-    User user = userRepository.findById(userId)
-            .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId}));
-    user.setNumberOfTabs(user.getNumberOfTabs() + 1);
-    return userMapper.toUserDto(userRepository.save(user));
-  }
-
-  @Override
   public UserDto getUserById(String userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId}));
-    return userMapper.toUserDto(user);
-  }
-
-  @Override
-  public UserDto getUserByUsername(String username) {
-    User user = userRepository.findByUsername(username)
-        .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME,
-            new String[]{username}));
     return userMapper.toUserDto(user);
   }
 
@@ -119,9 +103,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public CommonResponseDto deleteUser(String userId) {
-    Optional<User> user= Optional.ofNullable(userRepository.findById(userId).orElseThrow(() ->
-            new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId})));
-    userRepository.deleteById(userId);
+    User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID));
+    userRepository.delete(user);
     return  new CommonResponseDto(true, ResponeConstant.SUCCESS);
   }
 }

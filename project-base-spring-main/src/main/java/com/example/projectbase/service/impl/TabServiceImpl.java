@@ -2,6 +2,7 @@ package com.example.projectbase.service.impl;
 
 import com.example.projectbase.constant.ErrorMessage;
 import com.example.projectbase.constant.ResponeConstant;
+import com.example.projectbase.constant.ValidationErrorMessages;
 import com.example.projectbase.domain.dto.request.TabCreateDto;
 import com.example.projectbase.domain.dto.request.TabRenameDto;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
@@ -9,6 +10,7 @@ import com.example.projectbase.domain.dto.response.TabResponseDto;
 import com.example.projectbase.domain.entity.Tab;
 import com.example.projectbase.domain.entity.User;
 import com.example.projectbase.domain.mapper.TabMapper;
+import com.example.projectbase.exception.MaxTabsCreatedException;
 import com.example.projectbase.exception.NotFoundException;
 import com.example.projectbase.repository.TabRepository;
 import com.example.projectbase.repository.UserRepository;
@@ -31,6 +33,11 @@ public class TabServiceImpl implements TabService {
         Tab tab = tabMapper.toEntity(tabCreateDto);
         tab.setNumberOfQuestions(0);
         tab.setUser(user);
+        if (user.getNumberOfTabs() >=2) {
+            throw new MaxTabsCreatedException(ValidationErrorMessages.MAX_TABS_CREATED);
+        }
+        user.setNumberOfTabs(user.getNumberOfTabs() + 1);
+        userRepository.save(user);
         return tabMapper.toTabResponseDto(tabRepository.save(tab));
     }
 
@@ -45,14 +52,6 @@ public class TabServiceImpl implements TabService {
         Tab tab = tabRepository.findById(tabRenameDto.getId())
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Tab.ERR_NOT_FOUND_ID));
         tab.setName(tabRenameDto.getName());
-        return tabMapper.toTabResponseDto(tabRepository.save(tab));
-    }
-
-    @Override
-    public TabResponseDto addQuestionToTab(String tabId) {
-        Tab tab = tabRepository.findById(tabId)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.Tab.ERR_NOT_FOUND_ID));
-        tab.setNumberOfQuestions(tab.getNumberOfQuestions() + 1);
         return tabMapper.toTabResponseDto(tabRepository.save(tab));
     }
 

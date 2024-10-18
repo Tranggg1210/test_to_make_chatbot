@@ -40,4 +40,13 @@ public class UrlConstant {
     public static final String DELETE_ANSWER = PRE_FIX;
     private Answer() {}
   }
+
+  public static class Tab {
+    private static final String PRE_FIX = "/tab";
+    public static final String CREATE_TAB = PRE_FIX;
+    public static final String GET_TABS = PRE_FIX;
+    public static final String RENAME_TAB = PRE_FIX;
+    public static final String DELETE_TAB = PRE_FIX;
+    private Tab() {}
+  }
 }
