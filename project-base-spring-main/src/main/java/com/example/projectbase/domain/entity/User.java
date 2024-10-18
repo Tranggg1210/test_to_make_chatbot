@@ -40,13 +40,17 @@ public class User extends DateAuditing {
   @Column(nullable = false)
   private String lastName;
 
+  @Nationalized
+  @Column(nullable = false)
+  private int numberOfTabs;
+
   //Link to table Role
   @ManyToOne
   @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "FK_USER_ROLE"))
   private Role role;
 
-  //Link to table Question
+  //Link to table Tab
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   @JsonIgnore
-  private Set<Question> questions = new HashSet<>();
+  private Set<Tab> tabs = new HashSet<>();
 }

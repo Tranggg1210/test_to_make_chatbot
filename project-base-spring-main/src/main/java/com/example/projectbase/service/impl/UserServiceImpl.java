@@ -46,6 +46,7 @@ public class UserServiceImpl implements UserService {
     }
     User user = userMapper.toUser(userCreateDto);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
+    user.setNumberOfTabs(0);
     user.setRole(roleRepository.findByRoleName(RoleConstant.USER));
     userRepository.save(user);
     return userMapper.toUserDto(user);
@@ -69,6 +70,14 @@ public class UserServiceImpl implements UserService {
     userRepository.save(user);
 
     return new CommonResponseDto(true, "Password changed successfully");
+  }
+
+  @Override
+  public UserDto addTabToUser(String userId) {
+    User user = userRepository.findById(userId)
+            .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId}));
+    user.setNumberOfTabs(user.getNumberOfTabs() + 1);
+    return userMapper.toUserDto(userRepository.save(user));
   }
 
   @Override

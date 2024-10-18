@@ -25,9 +25,6 @@ public class Answer {
     @Column(nullable = false)
     private String content;
 
-    @Nationalized
-    @Column(nullable = false)
-    private LocalDateTime createdTime;
 
     //Link to table Question
     @ManyToOne

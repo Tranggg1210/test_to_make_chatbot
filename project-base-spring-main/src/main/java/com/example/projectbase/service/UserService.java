@@ -14,8 +14,6 @@ public interface UserService {
 
   UserDto createUser(UserCreateDto userCreateDto);
 
-  CommonResponseDto changePassword(ChangePasswordDto changePasswordDto);
-
   UserDto getUserById(String userId);
 
   UserDto getUserByUsername(String username);
@@ -23,6 +21,10 @@ public interface UserService {
   PaginationResponseDto<UserDto> getUsers(PaginationFullRequestDto request);
 
   UserDto getCurrentUser(UserPrincipal principal);
+
+  CommonResponseDto changePassword(ChangePasswordDto changePasswordDto);
+
+  UserDto addTabToUser(String userId);
 
   CommonResponseDto deleteUser(String userId);
 }

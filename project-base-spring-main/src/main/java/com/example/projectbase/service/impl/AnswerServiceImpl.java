@@ -35,24 +35,14 @@ public class AnswerServiceImpl implements AnswerService {
         Question question = questionRepository.findById(answerCreateDto.getQuestionId())
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Answer.ERR_NOT_FOUND_ID));
         Answer answer = answerMapper.toEntity(answerCreateDto);
-        answer.setCreatedTime(LocalDateTime.now());
         answer.setQuestion(question);
         return answerRepository.save(answer);
     }
 
     @Override
-    public PaginationResponseDto<Answer> getAnswerByQuestionId(String questionId, PaginationFullRequestDto request) {
-        Pageable pageable = PaginationUtil.buildPageable(request);
-        Page<Answer> answerPage = answerRepository.findAnswersByQuestionId(questionId, pageable);
-        PagingMeta pagingMeta = new PagingMeta(
-                answerPage.getTotalElements(),
-                answerPage.getTotalPages(),
-                answerPage.getNumber(),
-                answerPage.getSize(),
-                request.getSortBy(),
-                request.getIsAscending().toString()
-        );
-        return new PaginationResponseDto<>(pagingMeta, answerPage.toList());
+    public Answer getAnswerByQuestionId(String questionId) {
+        Answer answer = answerRepository.findAnswersByQuestionId(questionId);
+        return answer;
     }
 
     @Override

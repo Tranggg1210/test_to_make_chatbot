@@ -22,5 +22,7 @@ public class UserDto extends DateAuditingDto {
 
   private String roleName;
 
+  private String numberOfTabs;
+
 }
 

@@ -23,6 +23,11 @@
       "sourceType": "com.example.projectbase.config.properties.AdminInfoProperties"
     },
     {
+      "name": "admin.tab",
+      "type": "java.lang.Integer",
+      "sourceType": "com.example.projectbase.config.properties.AdminInfoProperties"
+    },
+    {
       "name": "admin.username",
       "type": "java.lang.String",
       "sourceType": "com.example.projectbase.config.properties.AdminInfoProperties"
